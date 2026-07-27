@@ -2735,3 +2735,12 @@ function cloneTickResult(
       }
     );
   }
+  
+  // =========================================================
+  // DEFAULT INSTANCE
+  // =========================================================
+  
+  export const wonderFactory =
+    new WonderFactory();
+  
+  export default WonderFactory;
