@@ -30,6 +30,7 @@ import {
   
   import {
     WonderRuntimePersistence,
+    type WonderRuntimePersistedState,
   } from "@/factory/runtime/WonderRuntimePersistence";
   
   import {
@@ -979,22 +980,43 @@ import {
       );
   
       assertTrue(
-        restoredFactorySnapshot !== null
+        restoredFactorySnapshot !== null,
+        "Factory snapshot should not be null."
       );
-      
       const factorySnapshot =
-        restoredFactorySnapshot;
-      
-      assertEqual(
-        factorySnapshot.queue.completedJobs,
-        1
-      );
-      assertEqual(
-        restoredSchedulerSnapshot
-          ?.schedules.length,
-        1,
-        "Scheduler restore callback should receive one schedule."
-      );
+      restoredFactorySnapshot as WonderFactorySnapshot;
+    
+    assertEqual(
+      factorySnapshot.queue.completedJobs,
+      1,
+      "Factory snapshot should contain one completed job."
+    );
+    
+    assertTrue(
+      restoredSchedulerSnapshot !== null,
+      "Scheduler snapshot should not be null."
+    );
+    
+    const schedulerSnapshot =
+      restoredSchedulerSnapshot as unknown as WonderSchedulerSnapshot;
+    
+    assertEqual(
+      schedulerSnapshot.schedules.length,
+      1,
+      "Scheduler restore callback should receive one schedule."
+    );
+    
+    assertEqual(
+      restoredSystem.scheduler.size(),
+      1,
+      "Restored scheduler should contain one schedule."
+    );
+
+assertEqual(
+  schedulerSnapshot.schedules.length,
+  1,
+  "Scheduler restore callback should receive one schedule."
+);
   
       assertEqual(
         restoredSystem.scheduler
@@ -1291,11 +1313,9 @@ import {
         factoryRestoreCallbackCalled,
   
         schedulerRestoreCallbackCalled,
-  
+          
         restoredFactoryCompletedJobs:
-          restoredFactorySnapshot
-            ?.queue.completedJobs ??
-          0,
+        factorySnapshot.queue.completedJobs,
   
         restoredSchedulerSchedules:
           restoredSystem.scheduler

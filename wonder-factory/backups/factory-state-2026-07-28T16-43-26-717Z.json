@@ -1,0 +1,40 @@
+{
+  "format": "wonder-factory-state",
+  "version": 1,
+  "encodedState": {
+    "version": 1,
+    "savedAt": {
+      "__wonderType": "Date",
+      "value": "2026-07-28T16:42:56.708Z"
+    },
+    "metadata": {
+      "factoryId": "wonder-factory",
+      "factoryName": "Wonder Factory",
+      "factoryStatus": "running",
+      "executionMode": "parallel",
+      "maximumConcurrentJobs": 4,
+      "activeJobCount": 0,
+      "createdAt": {
+        "__wonderType": "Date",
+        "value": "2026-07-28T08:44:13.148Z"
+      },
+      "updatedAt": {
+        "__wonderType": "Date",
+        "value": "2026-07-28T16:42:56.564Z"
+      },
+      "startedAt": {
+        "__wonderType": "Date",
+        "value": "2026-07-28T08:44:13.155Z"
+      },
+      "stoppedAt": null
+    },
+    "queue": {
+      "version": 1,
+      "createdAt": {
+        "__wonderType": "Date",
+        "value": "2026-07-28T16:42:56.708Z"
+      },
+      "jobs": []
+    }
+  }
+}

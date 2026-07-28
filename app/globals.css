@@ -67,4 +67,23 @@ h4 {
   ease-in-out
   infinite;
   
-  }
+  }@keyframes wonderFloat {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+  50% { transform: translate3d(0, -10px, 0) rotate(2deg); }
+}
+
+@keyframes wonderLoading {
+  0% { transform: translateX(-75%); }
+  50% { transform: translateX(35%); }
+  100% { transform: translateX(150%); }
+}
+
+@keyframes wonderFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+::selection {
+  background: rgba(125, 211, 252, 0.38);
+  color: #0f172a;
+}

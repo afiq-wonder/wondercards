@@ -1876,4 +1876,4 @@ import {
   export const wonderTransactionManager =
     new WonderTransactionManager();
   
-  export default WonderTransactionManager;
+  export default WonderTransactionManager;  
