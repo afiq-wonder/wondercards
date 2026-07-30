@@ -39,3 +39,14 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Build cache
+*.tsbuildinfo
+
+# Generated runtime state backups
+wonder-factory/backups/
+wonder-scheduler/backups/
+
+# Local runtime state
+wonder-factory/factory-state.json
+wonder-scheduler/scheduler-state.json
