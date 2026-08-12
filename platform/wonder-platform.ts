@@ -2,6 +2,7 @@ import {
   BrowserCycleRepository,
   BrowserDNARepository,
   BrowserMemoryRepository,
+  BrowserProofRepository,
 } from "./adapters/browser-storage";
 
 import { createWonderOSEventBus } from "@/core";
@@ -14,6 +15,7 @@ export function createWonderPlatform() {
   const dnaRepository = new BrowserDNARepository();
   const cycleRepository = new BrowserCycleRepository();
   const memoryRepository = new BrowserMemoryRepository();
+  const proofRepository = new BrowserProofRepository();
 
   const cycleService = new WonderCycleService({
     dnaRepository,
@@ -22,19 +24,24 @@ export function createWonderPlatform() {
     eventBus: events,
   });
 
-  return {
-    events,
+ return {
+  events,
 
-    startCycle: cycleService.startCycle.bind(cycleService),
+  startCycle: cycleService.startCycle.bind(cycleService),
 
-    completeCycle: cycleService.completeCycle.bind(cycleService),
+  completeCycle: cycleService.completeCycle.bind(cycleService),
 
-    getWonderDNA: (familyId: string) =>
-      dnaRepository.getByFamilyId(familyId),
+  saveProofEvent: proofRepository.save.bind(proofRepository),
 
-    getTimeline: (familyId: string) =>
-      memoryRepository.listByFamilyId(familyId),
-  };
+  getProofEvents: () =>
+    proofRepository.listAll(),
+
+  getWonderDNA: (familyId: string) =>
+    dnaRepository.getByFamilyId(familyId),
+
+  getTimeline: (familyId: string) =>
+    memoryRepository.listByFamilyId(familyId),
+};
 }
 
 export type WonderPlatform = ReturnType<

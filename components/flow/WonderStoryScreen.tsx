@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import type { WonderCard } from "@/types/wonderCard";
+import type { WonderCard } from "@/types/wondercard";
 
 interface WonderStoryScreenProps {
   card: WonderCard;

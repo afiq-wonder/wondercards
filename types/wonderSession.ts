@@ -1,4 +1,4 @@
-import type { WonderCard } from "./wonderCard";
+import type { WonderCard } from "./wondercard";
 import type { WonderStep } from "./wonderStep";
 
 export interface WonderSession {

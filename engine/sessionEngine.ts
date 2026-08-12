@@ -1,4 +1,4 @@
-import type { WonderCard } from "@/types/wonderCard";
+import type { WonderCard } from "@/types/wondercard";
 import type { WonderSession } from "@/types/wonderSession";
 
 function generateSessionId(card: WonderCard): string {

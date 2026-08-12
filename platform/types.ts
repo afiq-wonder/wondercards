@@ -76,3 +76,22 @@ export interface CompleteCycleResult {
   dna: WonderDNA;
   growthEvent: GrowthEvent;
 }
+
+export type WonderProofEventType =
+  | "adventure_started"
+  | "pause_reached"
+  | "mission_reached"
+  | "mission_completed"
+  | "moment_saved"
+  | "adventure_completed"
+  | "experience_rated";
+
+export interface WonderProofEvent {
+  id: string;
+  familyId: string;
+  cycleId: string;
+  adventureId: string;
+  type: WonderProofEventType;
+  createdAt: string;
+  metadata?: Record<string, string | number | boolean>;
+}

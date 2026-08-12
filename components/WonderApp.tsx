@@ -10,7 +10,7 @@ import {
   WonderAdventureClientError,
 } from "@/lib/wonderAdventureClient";
 import type { WonderAdventureRequest } from "@/types/adventureGeneration";
-import type { WonderCard } from "@/types/wonderCard";
+import type { WonderCard } from "@/types/wondercard";
 
 type AppState = "create" | "preparing" | "adventure";
 

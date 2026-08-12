@@ -1,5 +1,5 @@
 import type { WonderSession } from "@/engine/session/WonderSessionEngine";
-import type { WonderCard } from "@/types/wonderCard";
+import type { WonderCard } from "@/types/wondercard";
 
 import {
   createLocalDateKey,

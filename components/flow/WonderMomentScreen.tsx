@@ -8,6 +8,7 @@ import { FlowShell } from "./FlowShell";
 export function WonderMomentScreen() {
   const {
     card,
+    markMissionCompleted,
     completeAdventure,
     isBusy,
     error,
@@ -16,14 +17,74 @@ export function WonderMomentScreen() {
   const [reflection, setReflection] =
     useState("");
 
+  const [
+    missionCompleted,
+    setMissionCompleted,
+  ] = useState<boolean | null>(null);
+
   const canSave =
-    reflection.trim().length >= 3 && !isBusy;
+    missionCompleted !== null &&
+    reflection.trim().length >= 3 &&
+    !isBusy;
+
+  const handleSave = async () => {
+    if (!canSave) {
+      return;
+    }
+
+    if (missionCompleted === true) {
+      await markMissionCompleted();
+    }
+
+    await completeAdventure(reflection);
+  };
 
   return (
     <FlowShell
       eyebrow="Wonder Moment"
       title="Save today’s memory"
     >
+      <div className="mb-7">
+        <p className="text-lg font-medium text-slate-800">
+          Did you complete your Wonder Mission?
+        </p>
+
+        <p className="mt-1 text-sm text-slate-500">
+          Tell us if your family made it into the
+          real-world activity.
+        </p>
+
+        <div className="mt-4 grid grid-cols-2 gap-3">
+          <button
+            type="button"
+            onClick={() =>
+              setMissionCompleted(true)
+            }
+            className={`rounded-2xl border px-4 py-3 text-sm font-semibold transition ${
+              missionCompleted === true
+                ? "border-emerald-400 bg-emerald-50 text-emerald-700"
+                : "border-slate-200 bg-white text-slate-700"
+            }`}
+          >
+            🎉 We did!
+          </button>
+
+          <button
+            type="button"
+            onClick={() =>
+              setMissionCompleted(false)
+            }
+            className={`rounded-2xl border px-4 py-3 text-sm font-semibold transition ${
+              missionCompleted === false
+                ? "border-amber-400 bg-amber-50 text-amber-700"
+                : "border-slate-200 bg-white text-slate-700"
+            }`}
+          >
+            ⏳ Not yet
+          </button>
+        </div>
+      </div>
+
       <label
         htmlFor="wonder-reflection"
         className="block text-lg font-medium text-slate-800"
@@ -45,7 +106,9 @@ export function WonderMomentScreen() {
       />
 
       <div className="mt-2 flex justify-between text-xs text-slate-400">
-        <span>Write one simple family memory.</span>
+        <span>
+          Write one simple family memory.
+        </span>
         <span>{reflection.length}/500</span>
       </div>
 
@@ -60,9 +123,7 @@ export function WonderMomentScreen() {
 
       <div className="mt-7">
         <PrimaryButton
-          onClick={() =>
-            void completeAdventure(reflection)
-          }
+          onClick={() => void handleSave()}
           disabled={!canSave}
         >
           {isBusy

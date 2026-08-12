@@ -11,7 +11,7 @@ import {
   import type {
     WonderCard,
     WonderCardStatus,
-  } from "@/types/wonderCard";
+  } from "@/types/wondercard";
   
   import type { WonderGenome } from "@/types/wonderGenome";
   

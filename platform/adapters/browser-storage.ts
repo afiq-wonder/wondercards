@@ -2,16 +2,19 @@ import type {
   CycleRepository,
   DNARepository,
   MemoryRepository,
+  ProofRepository,
 } from "../repositories";
 import type {
   WonderCycle,
   WonderDNA,
   WonderMoment,
+  WonderProofEvent,
 } from "../types";
 
 const DNA_KEY = "wonderlabs:dna";
 const CYCLE_KEY = "wonderlabs:cycles";
 const MEMORY_KEY = "wonderlabs:moments";
+const PROOF_KEY = "wonderlabs:proof-events";
 
 function canUseStorage(): boolean {
   return (
@@ -117,6 +120,7 @@ export class BrowserMemoryRepository
   async save(moment: WonderMoment): Promise<void> {
     const moments =
       readList<WonderMoment>(MEMORY_KEY);
+
     const withoutDuplicate = moments.filter(
       (existing) => existing.id !== moment.id,
     );
@@ -133,6 +137,43 @@ export class BrowserMemoryRepository
     return readList<WonderMoment>(MEMORY_KEY)
       .filter(
         (moment) => moment.familyId === familyId,
+      )
+      .sort((a, b) =>
+        b.createdAt.localeCompare(a.createdAt),
+      );
+  }
+}
+
+export class BrowserProofRepository
+  implements ProofRepository
+{
+  async save(event: WonderProofEvent): Promise<void> {
+    const events =
+      readList<WonderProofEvent>(PROOF_KEY);
+
+    const withoutDuplicate = events.filter(
+      (existing) => existing.id !== event.id,
+    );
+
+    writeList(PROOF_KEY, [
+      ...withoutDuplicate,
+      event,
+    ]);
+  }
+
+  async listAll(): Promise<WonderProofEvent[]> {
+    return readList<WonderProofEvent>(PROOF_KEY)
+      .sort((a, b) =>
+        b.createdAt.localeCompare(a.createdAt),
+      );
+  }
+
+  async listByFamilyId(
+    familyId: string,
+  ): Promise<WonderProofEvent[]> {
+    return readList<WonderProofEvent>(PROOF_KEY)
+      .filter(
+        (event) => event.familyId === familyId,
       )
       .sort((a, b) =>
         b.createdAt.localeCompare(a.createdAt),

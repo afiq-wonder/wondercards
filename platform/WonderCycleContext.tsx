@@ -8,12 +8,14 @@ import {
   useState,
   type ReactNode,
 } from "react";
+
 import type { WonderCard } from "@/types/wondercard";
 import type {
   CompleteCycleResult,
   WonderCycle,
   WonderDNA,
 } from "./types";
+
 import { useWonderPlatform } from "./PlatformProvider";
 
 export type WonderFlowStep =
@@ -33,11 +35,23 @@ interface WonderCycleContextValue {
   completion: CompleteCycleResult | null;
   isBusy: boolean;
   error: string | null;
+
   beginAdventure(): Promise<void>;
-  goToStep(step: WonderFlowStep): void;
+
+  goToStep(
+    step: WonderFlowStep,
+  ): Promise<void>;
+
+  markMissionCompleted(): Promise<void>;
+
   completeAdventure(
     reflection: string,
   ): Promise<void>;
+
+  rateExperience(
+    rating: number,
+  ): Promise<void>;
+
   restartAdventure(): void;
 }
 
@@ -56,43 +70,62 @@ export function WonderCycleProvider({
   children: ReactNode;
 }) {
   const platform = useWonderPlatform();
+
   const [step, setStep] =
     useState<WonderFlowStep>("welcome");
+
   const [cycle, setCycle] =
     useState<WonderCycle | null>(null);
+
   const [dna, setDNA] =
     useState<WonderDNA | null>(null);
+
   const [completion, setCompletion] =
-    useState<CompleteCycleResult | null>(null);
-  const [isBusy, setIsBusy] = useState(false);
+    useState<CompleteCycleResult | null>(
+      null,
+    );
+
+  const [isBusy, setIsBusy] =
+    useState(false);
+
   const [error, setError] =
     useState<string | null>(null);
 
-    const beginAdventure = useCallback(async () => {
-      console.log("1. beginAdventure called");
-    
+  // -----------------------------------------
+  // 1. ADVENTURE STARTED
+  // -----------------------------------------
+
+  const beginAdventure =
+    useCallback(async () => {
       setIsBusy(true);
       setError(null);
-    
+
       try {
-        console.log("2. Calling platform.startCycle...");
-    
-        const startedCycle = await platform.startCycle({
+        const startedCycle =
+          await platform.startCycle({
+            familyId,
+            adventureId: card.id,
+          });
+
+        await platform.saveProofEvent({
+          id: crypto.randomUUID(),
           familyId,
+          cycleId: startedCycle.id,
           adventureId: card.id,
+          type: "adventure_started",
+          createdAt:
+            new Date().toISOString(),
         });
-    
-        console.log("3. startCycle returned:", startedCycle);
-    
+
         setCycle(startedCycle);
         setCompletion(null);
-    
-        console.log("4. Moving to story screen");
-    
         setStep("story");
       } catch (cause) {
-        console.error("START CYCLE ERROR:", cause);
-    
+        console.error(
+          "START CYCLE ERROR:",
+          cause,
+        );
+
         setError(
           cause instanceof Error
             ? cause.message
@@ -101,50 +134,197 @@ export function WonderCycleProvider({
       } finally {
         setIsBusy(false);
       }
-    }, [card.id, familyId, platform]);
+    }, [
+      card.id,
+      familyId,
+      platform,
+    ]);
 
-  const completeAdventure = useCallback(
-    async (reflection: string) => {
+  // -----------------------------------------
+  // 2. FLOW PROGRESS
+  // -----------------------------------------
+
+  const goToStep = useCallback(
+    async (
+      nextStep: WonderFlowStep,
+    ) => {
+      if (cycle) {
+        const eventType =
+          nextStep === "pause"
+            ? "pause_reached"
+            : nextStep === "mission"
+              ? "mission_reached"
+              : null;
+
+        if (eventType) {
+          await platform.saveProofEvent({
+            id: crypto.randomUUID(),
+            familyId,
+            cycleId: cycle.id,
+            adventureId: card.id,
+            type: eventType,
+            createdAt:
+              new Date().toISOString(),
+          });
+        }
+      }
+
+      setStep(nextStep);
+    },
+    [
+      card.id,
+      cycle,
+      familyId,
+      platform,
+    ],
+  );
+
+  // -----------------------------------------
+  // 3. REAL-WORLD MISSION COMPLETED
+  // -----------------------------------------
+
+  const markMissionCompleted =
+    useCallback(async () => {
       if (!cycle) {
-        setError(
-          "Start the Wonder Cycle before completing it.",
-        );
         return;
       }
 
-      setIsBusy(true);
-      setError(null);
+      await platform.saveProofEvent({
+        id: crypto.randomUUID(),
+        familyId,
+        cycleId: cycle.id,
+        adventureId: card.id,
+        type: "mission_completed",
+        createdAt:
+          new Date().toISOString(),
+      });
+    }, [
+      card.id,
+      cycle,
+      familyId,
+      platform,
+    ]);
 
-      try {
-        const result =
-          await platform.completeCycle({
+  // -----------------------------------------
+  // 4. WONDER MOMENT + ADVENTURE COMPLETED
+  // -----------------------------------------
+
+  const completeAdventure =
+    useCallback(
+      async (
+        reflection: string,
+      ) => {
+        if (!cycle) {
+          setError(
+            "Start the Wonder Cycle before completing it.",
+          );
+          return;
+        }
+
+        setIsBusy(true);
+        setError(null);
+
+        try {
+          const result =
+            await platform.completeCycle({
+              cycleId: cycle.id,
+              reflection,
+            });
+
+          await platform.saveProofEvent({
+            id: crypto.randomUUID(),
+            familyId,
             cycleId: cycle.id,
-            reflection,
+            adventureId: card.id,
+            type: "moment_saved",
+            createdAt:
+              new Date().toISOString(),
           });
 
-        setCycle(result.cycle);
-        setDNA(result.dna);
-        setCompletion(result);
-        setStep("celebrate");
-      } catch (cause) {
-        setError(
-          cause instanceof Error
-            ? cause.message
-            : "Unable to save the Wonder Moment.",
-        );
-      } finally {
-        setIsBusy(false);
-      }
-    },
-    [cycle, platform],
-  );
+          await platform.saveProofEvent({
+            id: crypto.randomUUID(),
+            familyId,
+            cycleId: cycle.id,
+            adventureId: card.id,
+            type: "adventure_completed",
+            createdAt:
+              new Date().toISOString(),
+          });
 
-  const restartAdventure = useCallback(() => {
-    setStep("welcome");
-    setCycle(null);
-    setCompletion(null);
-    setError(null);
-  }, []);
+          setCycle(result.cycle);
+          setDNA(result.dna);
+          setCompletion(result);
+          setStep("celebrate");
+        } catch (cause) {
+          console.error(
+            "COMPLETE CYCLE ERROR:",
+            cause,
+          );
+
+          setError(
+            cause instanceof Error
+              ? cause.message
+              : "Unable to save the Wonder Moment.",
+          );
+        } finally {
+          setIsBusy(false);
+        }
+      },
+      [
+        card.id,
+        cycle,
+        familyId,
+        platform,
+      ],
+    );
+
+  // -----------------------------------------
+  // 5. EXPERIENCE RATED
+  // -----------------------------------------
+
+  const rateExperience =
+    useCallback(
+      async (rating: number) => {
+        if (!cycle) {
+          return;
+        }
+
+        await platform.saveProofEvent({
+          id: crypto.randomUUID(),
+          familyId,
+          cycleId: cycle.id,
+          adventureId: card.id,
+          type: "experience_rated",
+          createdAt:
+            new Date().toISOString(),
+          metadata: {
+            rating,
+          },
+        });
+      },
+      [
+        card.id,
+        cycle,
+        familyId,
+        platform,
+      ],
+    );
+
+  // -----------------------------------------
+  // 6. RESTART
+  // -----------------------------------------
+
+  const restartAdventure =
+    useCallback(() => {
+      setStep("welcome");
+      setCycle(null);
+      setCompletion(null);
+      setError(null);
+    }, []);
+
+  // -----------------------------------------
+  // CONTEXT
+  // -----------------------------------------
 
   const value = useMemo(
     () => ({
@@ -157,8 +337,10 @@ export function WonderCycleProvider({
       isBusy,
       error,
       beginAdventure,
-      goToStep: setStep,
+      goToStep,
+      markMissionCompleted,
       completeAdventure,
+      rateExperience,
       restartAdventure,
     }),
     [
@@ -171,20 +353,27 @@ export function WonderCycleProvider({
       isBusy,
       error,
       beginAdventure,
+      goToStep,
+      markMissionCompleted,
       completeAdventure,
+      rateExperience,
       restartAdventure,
     ],
   );
 
   return (
-    <WonderCycleContext.Provider value={value}>
+    <WonderCycleContext.Provider
+      value={value}
+    >
       {children}
     </WonderCycleContext.Provider>
   );
 }
 
-export function useWonderCycle(): WonderCycleContextValue {
-  const context = useContext(WonderCycleContext);
+export function useWonderCycle():
+  WonderCycleContextValue {
+  const context =
+    useContext(WonderCycleContext);
 
   if (!context) {
     throw new Error(

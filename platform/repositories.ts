@@ -2,6 +2,7 @@ import type {
   WonderCycle,
   WonderDNA,
   WonderMoment,
+  WonderProofEvent,
 } from "./types";
 
 export interface DNARepository {
@@ -21,4 +22,12 @@ export interface MemoryRepository {
   listByFamilyId(
     familyId: string,
   ): Promise<WonderMoment[]>;
+}
+
+export interface ProofRepository {
+  save(event: WonderProofEvent): Promise<void>;
+  listAll(): Promise<WonderProofEvent[]>;
+  listByFamilyId(
+    familyId: string,
+  ): Promise<WonderProofEvent[]>;
 }
