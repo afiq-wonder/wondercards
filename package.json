@@ -5,6 +5,10 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "mobile:web": "next build mobile --webpack",
+    "mobile:sync": "npm run mobile:web && cap sync android",
+    "mobile:open": "cap open android",
+    "mobile:run": "npm run mobile:sync && cap run android",
     "start": "next start",
     "lint": "eslint",
     "docs:validate": "node scripts/validate-docs.mjs",
@@ -13,6 +17,8 @@
     "test:watch": "vitest"
   },
   "dependencies": {
+    "@capacitor/android": "^8.5.0",
+    "@capacitor/core": "^8.5.0",
     "gray-matter": "^4.0.3",
     "mermaid": "^11.16.0",
     "next": "16.2.11",
@@ -24,6 +30,7 @@
     "remark-gfm": "^4.0.1"
   },
   "devDependencies": {
+    "@capacitor/cli": "^8.5.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
