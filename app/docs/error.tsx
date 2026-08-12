@@ -1,0 +1,1 @@
+'use client';export default function ErrorPage({error,reset}:{error:Error;reset:()=>void}){return <main className="docsContent"><div className="docsErrorState"><span>WonderOS Docs</span><h1>Portal could not load this document.</h1><p>{error.message}</p><button onClick={reset}>Try again</button></div></main>}

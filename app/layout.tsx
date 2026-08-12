@@ -1,33 +1,23 @@
 import type { Metadata } from "next";
-import { Fredoka, Nunito } from "next/font/google";
+import type { ReactNode } from "react";
 import "./globals.css";
-
-const fredoka = Fredoka({
-  subsets: ["latin"],
-  variable: "--font-fredoka",
-});
-
-const nunito = Nunito({
-  subsets: ["latin"],
-  variable: "--font-nunito",
-});
+import { AppProviders } from "./providers";
 
 export const metadata: Metadata = {
-  title: "WonderLabs",
-  description: "Create magical family memories together.",
+  title: "WonderCards",
+  description:
+    "Where every day is a wonderful journey.",
 };
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${fredoka.variable} ${nunito.variable} bg-sky-50`}
-      >
-        {children}
+      <body>
+        <AppProviders>{children}</AppProviders>
       </body>
     </html>
   );

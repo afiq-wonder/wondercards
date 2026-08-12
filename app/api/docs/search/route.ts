@@ -1,0 +1,1 @@
+import{NextRequest,NextResponse}from 'next/server';import{searchDocs}from '@/lib/docs';export const dynamic='force-dynamic';export function GET(req:NextRequest){const q=req.nextUrl.searchParams.get('q')?.trim()||'';return NextResponse.json({results:q.length>=2?searchDocs(q):[]})}

@@ -1,0 +1,4 @@
+'use client';
+import Link from 'next/link';import {usePathname} from 'next/navigation';import type{NavNode}from '@/lib/docs';
+function Branch({nodes,depth=0}:{nodes:NavNode[];depth?:number}){const pathname=usePathname();return <ul className="docsNavList" data-depth={depth}>{nodes.map(n=>n.type==='folder'?<li key={`f-${n.name}`} className="docsNavFolder"><div className="docsNavFolderLabel">{n.label}</div>{n.children.length?<Branch nodes={n.children} depth={depth+1}/>:null}</li>:<li key={n.href}><Link href={n.href||'/docs'} className="docsNavLink" data-active={pathname===n.href} aria-current={pathname===n.href?'page':undefined}>{n.label}</Link></li>)}</ul>}
+export function DocsSidebar({tree}:{tree:NavNode[]}){return <aside className="docsSidebar"><div className="docsBrand"><Link href="/docs"><span className="docsBrandMark">W</span><span><strong>WonderOS</strong><small>Developer Portal</small></span></Link></div><nav><Branch nodes={tree}/></nav></aside>}

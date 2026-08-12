@@ -1,0 +1,13 @@
+{
+  "scripts": {
+    "docs:validate": "node scripts/validate-docs.mjs"
+  },
+  "dependenciesToInstall": [
+    "react-markdown",
+    "remark-gfm",
+    "rehype-slug",
+    "rehype-autolink-headings",
+    "mermaid",
+    "gray-matter"
+  ]
+}

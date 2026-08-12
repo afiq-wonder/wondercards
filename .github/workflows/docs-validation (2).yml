@@ -1,0 +1,26 @@
+name: WonderOS Documentation
+on:
+  pull_request:
+  push:
+    branches: [main, master]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 2 }
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - run: npm run docs:validate
+      - name: Require docs for architecture changes
+        shell: bash
+        run: |
+          BASE="${{ github.event.pull_request.base.sha }}"
+          [ -z "$BASE" ] || [ "$BASE" = "null" ] && BASE="HEAD~1"
+          git diff --name-only "$BASE" "${{ github.sha }}" > changed.txt
+          if grep -Eq '^(core|platform|engine|factory|studio|server|worker|sdk|types)/' changed.txt; then
+            grep -Eq '^(docs|README\.md|ARCHITECTURE\.md)' changed.txt || { echo "::error::Architecture changed without docs update"; exit 1; }
+          fi

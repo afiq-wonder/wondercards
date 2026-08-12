@@ -1,0 +1,23 @@
+{
+  "format": "wonder-scheduler-state",
+  "version": 1,
+  "encodedState": {
+    "version": 1,
+    "savedAt": {
+      "__wonderType": "Date",
+      "value": "2026-07-29T11:34:11.935Z"
+    },
+    "schedulerId": "wonder-scheduler",
+    "schedulerName": "Wonder Scheduler",
+    "snapshot": {
+      "version": 1,
+      "schedulerId": "wonder-scheduler",
+      "schedulerName": "Wonder Scheduler",
+      "createdAt": {
+        "__wonderType": "Date",
+        "value": "2026-07-29T11:34:11.935Z"
+      },
+      "schedules": []
+    }
+  }
+}

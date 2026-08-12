@@ -1,0 +1,1 @@
+import type{DocHeading}from '@/lib/docs';export function TableOfContents({headings}:{headings:DocHeading[]}){if(!headings.length)return null;return <aside className="docsToc"><strong>On this page</strong><ol>{headings.map((h,i)=><li key={`${h.id}-${i}`} data-level={h.level}><a href={`#${h.id}`}>{h.text}</a></li>)}</ol></aside>}

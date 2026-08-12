@@ -668,8 +668,135 @@ export interface WonderCloudSyncFailedPayload {
 }
 
 // =========================================================
+// WONDER CYCLE EVENTS
+// =========================================================
+
+export interface WonderCycleStartedPayload {
+  cycleId: WonderEventIdentifier;
+  familyId: WonderEventIdentifier;
+  adventureId: WonderEventIdentifier;
+  genomeId: WonderEventIdentifier;
+  startedAt: WonderEventTimestamp;
+}
+
+export interface WonderCycleCompletedPayload {
+  cycleId: WonderEventIdentifier;
+  familyId: WonderEventIdentifier;
+  adventureId: WonderEventIdentifier;
+  completedAt: WonderEventTimestamp;
+}
+
+export interface WonderGenomeGeneratedPayload {
+  genomeId: WonderEventIdentifier;
+  familyId: WonderEventIdentifier;
+  date: string;
+  generatedAt: WonderEventTimestamp;
+}
+
+export interface WonderMomentCreatedPayload {
+  momentId: WonderEventIdentifier;
+  cycleId: WonderEventIdentifier;
+  familyId: WonderEventIdentifier;
+  adventureId: WonderEventIdentifier;
+  createdAt: WonderEventTimestamp;
+}
+
+export interface WonderGrowthCalculatedPayload {
+  growthEventId: WonderEventIdentifier;
+  familyId: WonderEventIdentifier;
+  cycleId: WonderEventIdentifier;
+  trait: string;
+  xpAwarded: number;
+  previousLevel: number;
+  currentLevel: number;
+  calculatedAt: WonderEventTimestamp;
+}
+
+export interface WonderDNAUpdatedPayload {
+  familyId: WonderEventIdentifier;
+  cycleId: WonderEventIdentifier;
+  adventureCount: number;
+  wonderMoments: number;
+  updatedAt: WonderEventTimestamp;
+}
+
+// =========================================================
+// WONDER PLATFORM EVENTS
+// =========================================================
+
+export interface WonderCycleStartedPayload {
+  cycleId: WonderEventIdentifier;
+  familyId: WonderEventIdentifier;
+  adventureId: WonderEventIdentifier;
+  genomeId: WonderEventIdentifier;
+  startedAt: WonderEventTimestamp;
+}
+
+export interface WonderCycleCompletedPayload {
+  cycleId: WonderEventIdentifier;
+  familyId: WonderEventIdentifier;
+  adventureId: WonderEventIdentifier;
+  completedAt: WonderEventTimestamp;
+}
+
+export interface WonderGenomeGeneratedPayload {
+  genomeId: WonderEventIdentifier;
+  familyId: WonderEventIdentifier;
+  date: string;
+  generatedAt: WonderEventTimestamp;
+}
+
+export interface WonderMomentCreatedPayload {
+  momentId: WonderEventIdentifier;
+  cycleId: WonderEventIdentifier;
+  familyId: WonderEventIdentifier;
+  adventureId: WonderEventIdentifier;
+  createdAt: WonderEventTimestamp;
+}
+
+export interface WonderGrowthCalculatedPayload {
+  growthEventId: WonderEventIdentifier;
+  familyId: WonderEventIdentifier;
+  cycleId: WonderEventIdentifier;
+  trait: string;
+  xpAwarded: number;
+  previousLevel: number;
+  currentLevel: number;
+  calculatedAt: WonderEventTimestamp;
+}
+
+export interface WonderDNAUpdatedPayload {
+  familyId: WonderEventIdentifier;
+  cycleId: WonderEventIdentifier;
+  adventureCount: number;
+  wonderMoments: number;
+  updatedAt: WonderEventTimestamp;
+}
+
+// =========================================================
 // OFFICIAL EVENT MAP
 // =========================================================
+export interface WonderOSEventMap {
+  "cycle:started":
+    WonderCycleStartedPayload;
+
+  "cycle:completed":
+    WonderCycleCompletedPayload;
+
+  "genome:generated":
+    WonderGenomeGeneratedPayload;
+
+  "memory:wonder-moment-created":
+    WonderMomentCreatedPayload;
+
+  "growth:calculated":
+    WonderGrowthCalculatedPayload;
+
+  "dna:updated":
+    WonderDNAUpdatedPayload;
+
+  // existing events continue below...
+}
 
 export interface WonderOSEventMap {
   "studio:batch-created":
@@ -789,49 +916,14 @@ export interface WonderOSEventMap {
 // =========================================================
 
 export const WONDER_EVENT_NAMES = [
-  "studio:batch-created",
-  "studio:prompt-created",
-  "studio:content-ingested",
-  "studio:validation-started",
-  "studio:draft-validated",
-  "studio:validation-completed",
-  "studio:draft-approved",
-  "studio:draft-rejected",
-  "studio:import-completed",
-  "studio:catalog-published",
-  "studio:pipeline-started",
-  "studio:pipeline-completed",
-  "studio:pipeline-failed",
+  "cycle:started",
+  "cycle:completed",
+  "genome:generated",
+  "memory:wonder-moment-created",
+  "growth:calculated",
+  "dna:updated",
 
-  "cli:command-started",
-  "cli:command-completed",
-  "cli:workspace-initialised",
-  "cli:file-written",
-
-  "factory:job-queued",
-  "factory:job-started",
-  "factory:job-progress",
-  "factory:job-completed",
-  "factory:job-failed",
-  "factory:draft-repair-requested",
-  "factory:draft-repaired",
-
-  "runtime:card-created",
-  "runtime:session-started",
-  "runtime:session-step-changed",
-  "runtime:wonder-score-changed",
-  "runtime:session-completed",
-
-  "memory:adventure-recorded",
-  "memory:friendship-level-changed",
-  "memory:streak-changed",
-
-  "analytics:metric-recorded",
-  "analytics:content-performance",
-
-  "cloud:sync-started",
-  "cloud:sync-completed",
-  "cloud:sync-failed",
+  // existing events...
 ] as const satisfies readonly (
   keyof WonderOSEventMap
 )[];

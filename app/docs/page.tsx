@@ -1,0 +1,1 @@
+import{PortalDashboard}from '@/components/docs/PortalDashboard';import{getDashboard}from '@/lib/docs';export const metadata={title:'WonderOS Developer Portal',description:'WonderOS architecture, decisions, standards and specifications.'};export default function Page(){return <main className="docsContent docsContentDashboard"><PortalDashboard data={getDashboard()}/></main>}

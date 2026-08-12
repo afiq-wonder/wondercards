@@ -1,0 +1,28 @@
+
+name: Documentation Validation
+
+on:
+  pull_request:
+  push:
+    branches: [master, main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Detect architecture changes
+        run: |
+          git diff --name-only HEAD~1 HEAD > changed.txt
+          echo "Changed files:"
+          cat changed.txt
+
+      - name: Ensure docs updated
+        run: |
+          if grep -Eq '^(core|platform|engine|types|components|app)/' changed.txt; then
+            if ! grep -Eq '^(docs|WLOS|WKS|WCSpec|WPSpec|ARCHITECTURE.md|REPOSITORY_RULES.md)' changed.txt; then
+              echo "Architecture or platform code changed without documentation update."
+              exit 1
+            fi
+          fi

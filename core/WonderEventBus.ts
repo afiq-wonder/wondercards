@@ -30,24 +30,6 @@ export interface WonderEvent<
   >;
 }
 
-export interface WonderEvent<
-  TPayload = unknown
-> {
-  id: string;
-
-  name: string;
-
-  payload: TPayload;
-
-  createdAt: Date;
-
-  source: string | null;
-
-  metadata: Readonly<
-    Record<string, unknown>
-  >;
-}
-
 export interface WonderEventEmitOptions {
   source?: string | null;
 
