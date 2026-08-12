@@ -2,6 +2,7 @@
 
 import type { ReactNode } from "react";
 import { PlatformProvider } from "@/platform/PlatformProvider";
+import { PurchasesProvider } from "@/platform/purchases/PurchasesProvider";
 
 export function AppProviders({
   children,
@@ -9,6 +10,8 @@ export function AppProviders({
   children: ReactNode;
 }) {
   return (
-    <PlatformProvider>{children}</PlatformProvider>
+    <PurchasesProvider>
+      <PlatformProvider>{children}</PlatformProvider>
+    </PurchasesProvider>
   );
 }
