@@ -4,9 +4,9 @@ import {
   } from "@/engine/repository/WonderContentRepository";
   
   import type {
-    WonderCard,
+    WonderEngineCard,
     WonderCardStatus,
-  } from "@/types/wondercard";
+  } from "@/types/wonderEngineCard";
   
   import type { WonderGenome } from "@/types/wonderGenome";
   import type { WonderMission } from "@/types/wonderMission";
@@ -22,7 +22,7 @@ import {
     id?: string;
   
     /**
-     * WonderCard schema/content version.
+     * WonderEngineCard schema/content version.
      */
     version?: number;
   
@@ -73,7 +73,7 @@ import {
    *   -> WonderContentRepository
    *   -> WonderStory
    *   -> WonderMission
-   *   -> WonderCard
+   *   -> WonderEngineCard
    */
   export class WonderCardBuilder {
     constructor(
@@ -82,12 +82,12 @@ import {
     ) {}
   
     /**
-     * Builds a complete WonderCard from a WonderGenome.
+     * Builds a complete WonderEngineCard from a WonderGenome.
      */
     build(
       genome: WonderGenome,
       options: WonderCardBuildOptions = {}
-    ): WonderCard {
+    ): WonderEngineCard {
       const safeGenome = cloneWonderGenome(genome);
   
       this.validateGenome(safeGenome);
@@ -145,7 +145,7 @@ import {
     buildFromGenome(
       genome: WonderGenome,
       options: WonderCardBuildOptions = {}
-    ): WonderCard {
+    ): WonderEngineCard {
       return this.build(genome, options);
     }
   
@@ -160,9 +160,9 @@ import {
      * - development-time content regeneration.
      */
     rebuild(
-      card: WonderCard,
+      card: WonderEngineCard,
       options: WonderCardRebuildOptions = {}
-    ): WonderCard {
+    ): WonderEngineCard {
       const {
         preserveId = true,
         preserveCreatedAt = true,
@@ -202,9 +202,9 @@ import {
      * Creates a copy of a card with a new status.
      */
     withStatus(
-      card: WonderCard,
+      card: WonderEngineCard,
       status: WonderCardStatus
-    ): WonderCard {
+    ): WonderEngineCard {
       return {
         ...cloneWonderCard(card),
         status,
@@ -215,9 +215,9 @@ import {
      * Creates a copy of a card with an updated Wonder Score.
      */
     withWonderScore(
-      card: WonderCard,
+      card: WonderEngineCard,
       wonderScore: number
-    ): WonderCard {
+    ): WonderEngineCard {
       return {
         ...cloneWonderCard(card),
   
@@ -230,8 +230,8 @@ import {
      * Marks a card as played.
      */
     markPlayed(
-      card: WonderCard
-    ): WonderCard {
+      card: WonderEngineCard
+    ): WonderEngineCard {
       return this.withStatus(
         card,
         "played"
@@ -242,10 +242,10 @@ import {
      * Marks a card as completed and optionally updates its score.
      */
     markCompleted(
-      card: WonderCard,
+      card: WonderEngineCard,
       wonderScore: number =
         card.wonderScore
-    ): WonderCard {
+    ): WonderEngineCard {
       return {
         ...cloneWonderCard(card),
   
@@ -260,7 +260,7 @@ import {
      * Returns true when a card has all required runtime content.
      */
     isValidCard(
-      card: WonderCard
+      card: WonderEngineCard
     ): boolean {
       try {
         this.validateGenome(card.genome);
@@ -648,8 +648,8 @@ import {
   }
   
   function cloneWonderCard(
-    card: WonderCard
-  ): WonderCard {
+    card: WonderEngineCard
+  ): WonderEngineCard {
     return {
       ...card,
   
@@ -678,3 +678,4 @@ import {
     new WonderCardBuilder();
   
   export default WonderCardBuilder;
+

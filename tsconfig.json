@@ -31,5 +31,15 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts"
   ],
-  "exclude": ["node_modules"]
+   "exclude": [
+    "node_modules",
+    "archive/**/*",
+    "WonderCards-Client-MVP-Beast-Mode/**/*",
+    "sandbox/**/*",
+    "runtime/sandbox/**/*",
+    "components/flow/WonderStoryScreen.tsx",
+    "components/flow/WonderCelebrateScreen.tsx",
+    "components/WonderCard.tsx",
+    "components/WonderApp.tsx"
+  ]
 }

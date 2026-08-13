@@ -1,4 +1,4 @@
-import type { WonderCard } from "@/types/wondercard";
+import type { WonderEngineCard } from "@/types/wonderEngineCard";
 
 import type {
   WonderAdventureAPIEnvelope,
@@ -24,7 +24,7 @@ export async function createWonderAdventure(
   options: {
     signal?: AbortSignal;
   } = {}
-): Promise<{ card: WonderCard; requestId: string }> {
+): Promise<{ card: WonderEngineCard; requestId: string }> {
   let response: Response;
 
   try {
@@ -83,7 +83,7 @@ async function readEnvelope(
   }
 }
 
-function hydrateCard(card: WonderCardWire): WonderCard {
+function hydrateCard(card: WonderCardWire): WonderEngineCard {
   return {
     ...card,
     createdAt: new Date(card.createdAt),

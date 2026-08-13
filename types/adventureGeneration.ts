@@ -1,4 +1,4 @@
-import type { WonderCard } from "@/types/wondercard";
+import type { WonderEngineCard } from "@/types/wonderEngineCard";
 
 export const WONDER_THEME_IDS = [
   "ocean",
@@ -30,11 +30,14 @@ export interface WonderAdventureResponse {
 
 /** JSON-safe representation returned by the route handler. */
 export type WonderCardWire = Omit<
-  WonderCard,
+  WonderEngineCard,
   "createdAt" | "genome"
 > & {
   createdAt: string;
-  genome: Omit<WonderCard["genome"], "createdAt"> & {
+  genome: Omit<
+    WonderEngineCard["genome"],
+    "createdAt"
+  > & {
     createdAt: string;
   };
 };

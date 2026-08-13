@@ -1,5 +1,5 @@
 import type { WonderSession } from "@/engine/session/WonderSessionEngine";
-import type { WonderCard } from "@/types/wondercard";
+import type { WonderEngineCard } from "@/types/wonderEngineCard";
 
 import {
   createLocalDateKey,
@@ -161,7 +161,7 @@ export class WonderMemoryEngine {
   // =========================================================
 
   recordAdventure(
-    card: WonderCard,
+    card: WonderEngineCard,
     options: RecordWonderAdventureOptions
   ): WonderMemoryProfile {
     const memory =
@@ -668,7 +668,7 @@ export class WonderMemoryEngine {
 // =========================================================
 
 function createAdventureMemory(
-  card: WonderCard,
+  card: WonderEngineCard,
   options: RecordWonderAdventureOptions
 ): WonderMemoryAdventure {
   const completedAt =
@@ -994,3 +994,4 @@ export const wonderMemoryEngine =
   new WonderMemoryEngine();
 
 export default WonderMemoryEngine;
+

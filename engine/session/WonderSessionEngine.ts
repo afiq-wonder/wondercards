@@ -8,10 +8,7 @@ import {
     wonderRepository,
   } from "@/engine/repository/WonderRepository";
   
-  import type {
-    WonderCard,
-    WonderCardStatus,
-  } from "@/types/wondercard";
+  import type { WonderEngineCard, WonderCardStatus } from "@/types/wonderEngineCard";
   
   import type { WonderGenome } from "@/types/wonderGenome";
   
@@ -38,7 +35,7 @@ import {
   
     genome: WonderGenome;
   
-    card: WonderCard;
+    card: WonderEngineCard;
   
     currentStep: number;
   
@@ -820,7 +817,7 @@ import {
         )
       ) {
         errors.push(
-          "Session WonderCard is invalid."
+          "Session WonderEngineCard is invalid."
         );
       }
   
@@ -885,7 +882,7 @@ import {
   // =========================================================
   
   function createWonderSessionId(
-    card: WonderCard,
+    card: WonderEngineCard,
     createdAt: Date
   ): string {
     const source =
@@ -1089,8 +1086,8 @@ import {
   }
   
   function hydrateWonderCard(
-    card: WonderCard
-  ): WonderCard {
+    card: WonderEngineCard
+  ): WonderEngineCard {
     return {
       ...card,
   
@@ -1212,8 +1209,8 @@ import {
   }
   
   function cloneWonderCard(
-    card: WonderCard
-  ): WonderCard {
+    card: WonderEngineCard
+  ): WonderEngineCard {
     return {
       ...card,
   
@@ -1307,3 +1304,4 @@ import {
     new WonderSessionEngine();
   
   export default WonderSessionEngine;
+
