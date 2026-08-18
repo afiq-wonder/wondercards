@@ -32,7 +32,11 @@ How Coral behaves.
 
 How decisions are made.
 
-6. Current Sprint
+6. [05-Backend-Principles.md](./05-Backend-Principles.md)
+
+How WonderLabs protects secrets, enforces monetization, limits infrastructure risk, and keeps providers replaceable.
+
+7. Current Sprint
 
 What we are building today.
 
@@ -53,6 +57,8 @@ What we are building today.
 6. Every feature must strengthen the Wonder experience.
 
 7. Documentation is part of the product.
+
+8. Protected capability follows WonderLabs Backend Principles.
 
 ---
 
